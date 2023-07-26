@@ -6,7 +6,20 @@ define(function(require) {
         var _service = {
             getPowerQueries: function(req) {
                 return _service.http(req).then(function (result) {
-                    //do stuff
+                    if (result.data.paths) {
+                        var pqArray = [];
+                        angular.forEach(result.data.paths, function(value,key) {
+                            if (value.post.tags.indexOf('pqreport') > -1) {
+                                pqArray.push({
+                                    title: value.post.summary,
+                                    url: key
+                                });
+                            }
+                        });
+                        return pqArray;
+                    } else {
+                        return {error: "No PowerQueries supporting PQ Reports Exists"}
+                    }
                 }); //End _service.http
             }, //End getPowerQueries
             http: function(req) {
@@ -17,5 +30,6 @@ define(function(require) {
                 });//End $http
             }//End http
         } //End _service
+        return _service;
     }); //End module.factory
 }); //End define
