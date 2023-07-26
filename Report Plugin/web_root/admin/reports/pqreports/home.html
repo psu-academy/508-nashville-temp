@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <title>PQ Reports</title>
+<!-- required scripts -->
+ ~[wc:commonscripts] 
+<!-- Required style sheets: screen.css, and print.css --> 
+ <link href="/images/css/screen.css" rel="stylesheet" media="screen">
+ <link href="/images/css/print.css" rel="stylesheet" media="print">
+</head> 
+<body> 
+ ~[wc:admin_header_css] 
+ <!-- breadcrumb start -->PQ Reports<!-- breadcrumb end --> 
+<!-- start of main menu and content --> 
+ ~[wc:admin_navigation_css] 
+<!-- Start of Page --> 
+ <h1>PQ Reports</h1> 
+<!-- start of content area --> 
+ 
+ <div data-require-path="components/pqreports/index"
+        data-module-name="pqReports"
+        ng-controller="pqReportsController">
+ <div class="box-round"> 
+ <h2>2 + 2 = {{ 2+2 }}</h2> 
+ <p> 
+ Your paragraph text goes here. 
+ </p> 
+ </div> 
+ </div>
+<!-- end of content area --> 
+ ~[wc:admin_footer_css] 
+</body> 
+</html>
