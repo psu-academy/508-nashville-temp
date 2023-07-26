@@ -22,6 +22,7 @@ define(function(require) {
             } //End getRequest object
             pqDataService.getPowerQueries(getRequest).then( function (pqArray) {
                 $scope.pqSelect = pqArray;
+                console.log($scope.pqSelect);
                 closeLoading();
             });
         }

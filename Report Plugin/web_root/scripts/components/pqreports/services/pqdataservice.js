@@ -8,11 +8,22 @@ define(function(require) {
                 return _service.http(req).then(function (result) {
                     if (result.data.paths) {
                         var pqArray = [];
+                        var pqHeaders = [];
                         angular.forEach(result.data.paths, function(value,key) {
                             if (value.post.tags.indexOf('pqreport') > -1) {
+                                pqHeaders = [];
+                                if (typeof result.data.definitions['powerquery.resp.'+key.replace('/ws/schema/query/','')+'.record'] !== 'undefined') {
+                                    for (var key in result.data.definitions['powerquery.resp.'+key.replace('/ws/schema/query/','')+'.record'].properties) {
+                                        pqHeaders.push(key);
+                                    };
+                                } else {
+                                    // hold for the future
+                                }
+
                                 pqArray.push({
                                     title: value.post.summary,
-                                    url: key
+                                    url: key,
+                                    headers: pqHeaders
                                 });
                             }
                         });
