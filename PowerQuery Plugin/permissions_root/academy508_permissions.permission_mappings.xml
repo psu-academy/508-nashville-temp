@@ -1,5 +1,5 @@
 <permission_mappings>
-    <permission name='/admin/50/angularreport1.html'>
+    <permission name='/admin/reports/pqreports/home.html'>
       <implies allow="post">/ws/schema/query/com.powerschool.psu.academy508.studentlist</implies>
       <implies allow="post">/ws/schema/query/com.powerschool.psu.academy508.storedgrades</implies>
       <implies allow="post">/ws/schema/query/com.powerschool.psu.academy508.reenrollments</implies>
