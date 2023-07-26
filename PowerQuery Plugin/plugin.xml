@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://plugin.powerschool.pearson.com"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://plugin.powerschool.pearson.com plugin.xsd"
+        name="PQ Reports Queries"
+        version="23.7"
+        description="Queries for PQ Reports">
+ 
+    <publisher name="Company Name">
+        <contact email="support@company.com"/>
+    </publisher>
+</plugin>

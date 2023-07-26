@@ -1,0 +1,9 @@
+<permission_mappings>
+    <permission name='/admin/50/angularreport1.html'>
+      <implies allow="post">/ws/schema/query/com.powerschool.psu.academy508.studentlist</implies>
+      <implies allow="post">/ws/schema/query/com.powerschool.psu.academy508.storedgrades</implies>
+      <implies allow="post">/ws/schema/query/com.powerschool.psu.academy508.reenrollments</implies>
+      <implies allow="post">/ws/schema/query/com.powerschool.psu.academy508.test_results</implies>
+      <implies allow="post">/ws/schema/query/com.powerschool.psu.academy508.test_results_args</implies>
+    </permission>
+</permission_mappings>

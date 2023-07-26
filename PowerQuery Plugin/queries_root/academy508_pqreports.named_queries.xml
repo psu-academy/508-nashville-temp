@@ -1,0 +1,184 @@
+<queries>
+    <query name="com.powerschool.psu.academy508.studentlist" coreTable="" flattened="true" tags="pqreport,Lists">
+        <summary>Student List</summary>
+        <description>List of students on this server.</description>
+        <columns>
+            <column column="STUDENTS.LAST_NAME">LAST_NAME</column>
+            <column column="STUDENTS.FIRST_NAME">FIRST_NAME</column>
+            <column column="STUDENTS.GRADE_LEVEL">GRADE</column>
+            <column column="STUDENTS.ENROLL_STATUS">ENROLLMENT_STATUS</column>
+            <column column="STUDENTS.ETHNICITY">ETHNICITY</column>
+ 		</columns>
+        <sql>
+			<![CDATA[
+			select last_name, first_name, grade_level, 
+            CASE enroll_status
+                WHEN 0 THEN 'A' WHEN 1 THEN 'I' WHEN -1 THEN 'P'
+                ELSE 'O'
+            END as enroll_stat,
+            CASE ethnicity
+                WHEN 'A' THEN 'Asian' WHEN 'B' THEN 'African-American'
+                WHEN 'C' THEN 'Caucasian' WHEN 'H' THEN 'Hispanic'
+                WHEN 'I' THEN 'American Indian' WHEN 'P' THEN 'Pacific Islander'
+            ELSE 'Unknown' END as ethnicity
+            from students
+            order by schoolid, grade_level desc, lastfirst
+			]]>
+        </sql>
+    </query>
+    <query name="com.powerschool.psu.academy508.storedgrades" coreTable="" flattened="true" tags="pqreport,Grades">
+        <summary>Stored Grade Listing</summary>
+        <description>Stored Grades for students</description>
+        <columns>
+            <column column="STUDENTS.LASTFIRST">STUDENT_NAME</column>
+            <column column="STOREDGRADES.GRADE_LEVEL">GRADE_LEVEL</column>
+            <column column="STOREDGRADES.COURSE_NUMBER">COURSE_NUMBER</column>
+            <column column="STOREDGRADES.COURSE_NAME">COURSE_NAME</column>
+            <column column="STOREDGRADES.STORECODE">STORE_CODE</column>
+            <column column="STOREDGRADES.GRADE">GRADE</column>
+            <column column="STOREDGRADES.PERCENT">PERCENT</column>
+            <column column="STOREDGRADES.SCHOOLID">SCHOOL_NUMBER</column>
+            <column column="STOREDGRADES.SCHOOLNAME">SCHOOL_NAME</column>
+ 		</columns>
+        <sql>
+			<![CDATA[
+			select s.lastfirst, sg.grade_level, sg.course_number, sg.course_name, sg.storecode, sg.grade, sg.percent, sg.schoolid, sg.schoolname
+            from storedgrades sg
+            join students s ON s.id = sg.studentid
+            order by s.lastfirst, sg.grade_level
+			]]>
+        </sql>
+    </query>
+    <query name="com.powerschool.psu.academy508.reenrollments" coreTable="" flattened="true" tags="pqreport,Lists">
+        <summary>Student Enrollment History</summary>
+        <description>Get a list of student enrollments</description>
+        <columns>
+            <column column="STUDENTS.LASTFIRST">STUDENT_NAME</column>
+            <column column="SCHOOLS.NAME">SCHOOL_NAME</column>
+            <column column="STUDENTS.ENTRYDATE">ENTRY_DATE</column>
+            <column column="STUDENTS.ENTRYCODE">ENTRY_CODE</column>
+            <column column="STUDENTS.EXITDATE">EXIT_DATE</column>
+            <column column="STUDENTS.EXITCODE">EXIT_CODE</column>
+ 		</columns>
+        <sql>
+			<![CDATA[
+			select S.LASTFIRST, SCH.NAME, S.ENTRYDATE, S.ENTRYCODE, S.EXITDATE, S.EXITCODE
+            FROM STUDENTS S
+            JOIN SCHOOLS SCH ON SCH.SCHOOL_NUMBER = S.SCHOOLID
+            UNION ALL
+			select S.LASTFIRST, SCH.NAME, R.ENTRYDATE, R.ENTRYCODE, R.EXITDATE, R.EXITCODE
+            FROM STUDENTS S 
+            JOIN REENROLLMENTS R ON R.STUDENTID = S.ID
+            JOIN SCHOOLS SCH ON SCH.SCHOOL_NUMBER = R.SCHOOLID
+            ORDER BY 1, 3, 5
+			]]>
+        </sql>
+    </query>
+    <query name="com.powerschool.psu.academy508.test_results" coreTable="" flattened="true" tags="pqreport,Grades">
+        <summary>Student Test Results</summary>
+        <description>Get a list of student test results</description>
+        <columns>
+            <column column="STUDENTS.LASTFIRST">STUDENT_NAME</column>
+            <column column="TEST.NAME">TEST_NAME</column>
+            <column column="STUDENTTEST.TEST_DATE">TEST_DATE</column>
+            <column column="STUDENTTEST.GRADE_LEVEL">GRADE_LEVEL</column>
+            <column column="TESTSCORE.NAME">SCORE_NAME</column>
+            <column column="STUDENTTESTSCORE.ALPHASCORE">NUMERIC_SCORE</column>
+            <column column="STUDENTTESTSCORE.ALPHASCORE">PERCENT_SCORE</column>
+            <column column="STUDENTTESTSCORE.ALPHASCORE">ALPHA_SCORE</column>
+ 		</columns>
+        <sql>
+			<![CDATA[
+    SELECT
+    s.lastfirst,
+    t.name testname,
+    st.test_date,
+    st.grade_level,
+    ts.name scorename,
+    CASE
+        WHEN to_char(sts.numscore) IS NULL
+             OR to_char(sts.numscore) = '0' THEN
+            'N/A'
+        ELSE
+            to_char(sts.numscore)
+    END numscore,
+    CASE
+        WHEN to_char(sts.percentscore) IS NULL
+             OR to_char(sts.percentscore) = '0' THEN
+            'N/A'
+        ELSE
+            to_char(sts.percentscore)
+    END percentscore,
+    CASE
+        WHEN sts.alphascore IS NULL THEN
+            'N/A'
+        ELSE
+            sts.alphascore
+    END alphascore
+FROM
+         studenttest st
+    INNER JOIN test             t ON st.testid = t.id
+    INNER JOIN testscore        ts ON ts.testid = t.id
+    INNER JOIN studenttestscore sts ON sts.studenttestid = st.id
+                                       AND sts.testscoreid = ts.id 
+    INNER JOIN students s ON s.id = st.studentid
+        order by st.test_date desc, t.name, st.dcid, ts.sortorder 
+			]]>
+        </sql>
+    </query>
+    <query name="com.powerschool.psu.academy508.test_results_args" coreTable="" flattened="true" tags="pqreport,Grades">
+        <summary>Student Test Results (Args)</summary>
+        <description>Get a list of student test results</description>
+        <args>
+            <arg name="testname" required="true" description="Test Name" type="primitive" casing="upper" />
+        </args>
+        <columns>
+            <column column="STUDENTS.LASTFIRST">STUDENT_NAME</column>
+            <column column="TEST.NAME">TEST_NAME</column>
+            <column column="STUDENTTEST.TEST_DATE">TEST_DATE</column>
+            <column column="STUDENTTEST.GRADE_LEVEL">GRADE_LEVEL</column>
+            <column column="TESTSCORE.NAME">SCORE_NAME</column>
+            <column column="STUDENTTESTSCORE.ALPHASCORE">NUMERIC_SCORE</column>
+            <column column="STUDENTTESTSCORE.ALPHASCORE">PERCENT_SCORE</column>
+            <column column="STUDENTTESTSCORE.ALPHASCORE">ALPHA_SCORE</column>
+ 		</columns>
+        <sql>
+			<![CDATA[
+    SELECT
+    s.lastfirst,
+    t.name testname,
+    st.test_date,
+    st.grade_level,
+    ts.name scorename,
+    CASE
+        WHEN to_char(sts.numscore) IS NULL
+             OR to_char(sts.numscore) = '0' THEN
+            'N/A'
+        ELSE
+            to_char(sts.numscore)
+    END numscore,
+    CASE
+        WHEN to_char(sts.percentscore) IS NULL
+             OR to_char(sts.percentscore) = '0' THEN
+            'N/A'
+        ELSE
+            to_char(sts.percentscore)
+    END percentscore,
+    CASE
+        WHEN sts.alphascore IS NULL THEN
+            'N/A'
+        ELSE
+            sts.alphascore
+    END alphascore
+FROM
+         studenttest st
+    INNER JOIN test             t ON st.testid = t.id AND upper(t.name) = :testname
+    INNER JOIN testscore        ts ON ts.testid = t.id
+    INNER JOIN studenttestscore sts ON sts.studenttestid = st.id
+                                       AND sts.testscoreid = ts.id 
+    INNER JOIN students s ON s.id = st.studentid
+        order by st.test_date desc, t.name, st.dcid, ts.sortorder 
+			]]>
+        </sql>
+    </query>
+</queries>
