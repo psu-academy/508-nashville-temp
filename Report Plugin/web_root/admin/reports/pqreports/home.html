@@ -24,7 +24,9 @@
               <h2>Report Options</h2>
               <div>
                      <label for="pqSelect">Select Report</label>
-                     <select id="pqSelect" ng-model="pqItem">
+                     <select id="pqSelect" 
+                            ng-model="pqItem"
+                            ng-change="getTableData()">
                             <option value=""></option>
                             <option ng-repeat="item in pqSelect" value="{{item}}">
                                    {{item.title}}
