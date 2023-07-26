@@ -20,12 +20,21 @@
  <div data-require-path="components/pqreports/index"
         data-module-name="pqReports"
         ng-controller="pqReportsController">
- <div class="box-round"> 
- <h2>2 + 2 = {{ 2+2 }}</h2> 
- <p> 
- Your paragraph text goes here. 
- </p> 
- </div> 
+       <div class="box-round"> 
+              <h2>Report Options</h2>
+              <div>
+                     <label for="pqSelect">Select Report</label>
+                     <select id="pqSelect" ng-model="pqItem">
+                            <option value=""></option>
+                            <option ng-repeat="item in pqSelect" value="{{item}}">
+                                   {{item.title}}
+                            </option>
+                     </select>
+              </div>
+       </div> 
+       <div>
+              <h3>{{reportTitle}}</h3>
+       </div>
  </div>
 <!-- end of content area --> 
  ~[wc:admin_footer_css] 
