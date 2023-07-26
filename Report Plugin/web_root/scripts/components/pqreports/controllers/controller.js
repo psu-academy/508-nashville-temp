@@ -2,7 +2,8 @@
 
 define(function(require) {
     var module = require('components/pqreports/module');
-    module.controller('pqReportsController', ['$scope', 'pqDataService', function($scope, pqDataService) {
+    module.controller('pqReportsController', ['$scope', 'pqDataService', 'pqService', 
+    function($scope, pqDataService, pqService) {
         console.log('controller started!');
         $scope.pqItem;
         $scope.pqItemObj;
@@ -29,6 +30,27 @@ define(function(require) {
             console.log('Getting the PowerQuery Data');
             $scope.pqItemObj = JSON.parse($scope.pqItem);
             $scope.reportTitle = $scope.pqItemObj.title;
+
+
+            var pqRequest = {
+                method: 'POST',
+                url: $scope.pqItemObj.url,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                data: {},
+                datatype: 'json'
+            }
+
+            pqService.getData(pqRequest).then( function(result) {
+                $scope.tableData = result;
+                console.log($scope.tableData);
+
+                closeLoading();
+            });
+
+
         };
     }]);//End Controller
 });//End define
