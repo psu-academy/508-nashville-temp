@@ -7,6 +7,6 @@ define(function(require) {
     require('components/pqreports/module');
     require('components/pqreports/controllers/index');
     //require('components/pqreports/directives/index');
-    //require('components/pqreports/services/index');
+    require('components/pqreports/services/index');
     
 });
