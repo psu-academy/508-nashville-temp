@@ -54,12 +54,24 @@
                   </div>
               </div>
               <h2 class="toggle expanded">Required Parameters</h2>
-              <div>
-                     <p ng-repeat="arg in requiredArgs track by $index">
-                            {{arg}} <input type="text" ng-model="suppliedArgs[$index]" value="" />
-                     </p>
-                     <button type="button" ng-click="getTableData()">Run Report</button>
+              <div class="fluid-form">
+                     <div>
+                            <div ng-repeat="arg in requiredArgs track by $index">
+                                   <label for="param{{$index}}">{{arg}}</label>
+                                   <input id="param{{$index}}" type="text" ng-model="suppliedArgs[$index]" value="" />
+                            </div>
+                            <div>
+                                   <label for="buttonRefresh1">&nbsp;</label>
+                                   <button id="buttonRefresh1" type="button" ng-click="getTableData()">Run Report</button>
+                            </div>
+                     </div>
               </div>
+              <h2 class="toggle expanded">Sort & Select Columns</h2>
+              <ul ng-model="rowHeadersBoth" pq-sortable>
+                     <li ng-repeat="header in rowHeadersBoth track by $index">
+                            {{header.name}}
+                     </li>
+              </ul>
        </div> 
        <div>
               <h3>{{reportTitle}}</h3>
