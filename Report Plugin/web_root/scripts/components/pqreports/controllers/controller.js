@@ -2,15 +2,15 @@
 
 define(function(require) {
     var module = require('components/pqreports/module');
-    module.controller('pqReportsController', ['$scope', 'pqDataService', 'pqService', 
-    function($scope, pqDataService, pqService) {
+    module.controller('pqReportsController', ['$scope', 'pqDataService', 'pqService', '$filter',
+    function($scope, pqDataService, pqService, $filter) {
         console.log('controller started!');
         $scope.pqItem;
         $scope.pqItemObj;
-        $scope.pqSelect = [
-            {title: "Report 1", path: "/ws/schema/query/com.powerschool.psu.1"},
-            {title: "Report 2", path: "/ws/schema/query/com.powerschool.psu.2"}
-        ];
+        $scope.rowHeaders = []; //sanitized header title
+        $scope.rowHeadersRaw = []; //query column name from the headers
+        $scope.rowHeadersBoth = []; //both column name and sanitized header
+        $scope.pqSelect = [];
         $scope.reportTitle = 'No Report Selected';
 
         /* Get PowerQuery List via the API */
@@ -31,6 +31,21 @@ define(function(require) {
             console.log('Getting the PowerQuery Data');
             $scope.pqItemObj = JSON.parse($scope.pqItem);
             $scope.reportTitle = $scope.pqItemObj.title;
+            $scope.tableData = {};
+            $scope.rowHeaders = []; //sanitized header title
+            $scope.rowHeadersRaw = []; //query column name from the headers
+            $scope.rowHeadersBoth = []; //both column name and sanitized header
+
+            /* Build and sanitize headers */
+            angular.forEach($scope.pqItemObj.headers, function(n, key) {
+                //console.log(n + '-' + key);
+                $scope.rowHeadersRaw.push(n);
+                var tempHeader = $scope.sanitizeHeader(n);
+                $scope.rowHeaders.push(tempHeader);
+                $scope.rowHeadersBoth.push({"field": n, "name": tempHeader});
+            });
+            console.log($scope.rowHeaders);
+            $scope.rowHeadersBoth = $filter('orderBy')($scope.rowHeadersBoth, 'name');
 
 
             var pqRequest = {
@@ -53,5 +68,13 @@ define(function(require) {
 
 
         };
+
+        $scope.sanitizeHeader = function(str) {
+            var tempKey = str.replace('_',' ');
+            return tempKey.replace(/\w\S*/g, function(txt) {
+                return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+            });
+        }
+
     }]);//End Controller
 });//End define

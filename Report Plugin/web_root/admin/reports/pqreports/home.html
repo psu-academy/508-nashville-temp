@@ -39,8 +39,15 @@
               <h3>{{reportTitle}}</h3>
               <table class="linkDescList">
                      <thead>
-                            <th ng-repeat="header in pqItemObj.headers" ng-bind="header"></th>
+                            <tr>
+                                   <th ng-repeat="header in rowHeadersBoth" ng-bind="header.name"></th>
+                            </tr>
                      </thead>
+                     <tbody>
+                            <tr ng-repeat="row in tableData.record">
+                                   <td ng-repeat="column in rowHeadersBoth" ng-bind="row[column.field]"></td>
+                            </tr>
+                     </tbody>
               </table>
        </div>
  </div>
