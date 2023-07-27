@@ -13,8 +13,8 @@ define(function(require) {
                             if (value.post.tags.indexOf('pqreport') > -1) {
                                 pqHeaders = [];
                                 if (typeof result.data.definitions['powerquery.resp.'+key.replace('/ws/schema/query/','')+'.record'] !== 'undefined') {
-                                    for (var key in result.data.definitions['powerquery.resp.'+key.replace('/ws/schema/query/','')+'.record'].properties) {
-                                        pqHeaders.push(key);
+                                    for (var header in result.data.definitions['powerquery.resp.'+key.replace('/ws/schema/query/','')+'.record'].properties) {
+                                        pqHeaders.push(header);
                                     };
                                 } else {
                                     // hold for the future
