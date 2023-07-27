@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr" >
+<html>
 <head>
  <title>PQ Reports</title>
 <!-- required scripts -->
@@ -65,7 +65,9 @@
               <table class="linkDescList">
                      <thead>
                             <tr>
-                                   <th ng-repeat="header in rowHeadersBoth" ng-bind="header.name"></th>
+                                   <th  ng-repeat="header in rowHeadersBoth" 
+                                        ng-bind="header.name"
+                                        data-pss-sort-fields="{{header.field}}"></th>
                             </tr>
                      </thead>
                      <tbody>
