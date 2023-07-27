@@ -12,6 +12,7 @@ define(function(require) {
         $scope.rowHeadersBoth = []; //both column name and sanitized header
         $scope.pqSelect = [];
         $scope.reportTitle = 'No Report Selected';
+        $scope.totalRows = "100";
 
         /* Get PowerQuery List via the API */
         $scope.getQueryData = function() {
@@ -50,7 +51,7 @@ define(function(require) {
 
             var pqRequest = {
                 method: 'POST',
-                url: $scope.pqItemObj.url,
+                url: $scope.pqItemObj.url + '?pagesize=' + $scope.totalRows,
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'

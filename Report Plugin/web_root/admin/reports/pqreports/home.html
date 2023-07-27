@@ -23,7 +23,9 @@
         ng-init="getQueryData()">
        <div class="box-round"> 
               <h2>Report Options</h2>
-              <div>
+              <div class="fluid-form">
+                  <div>
+                    <div>  
                      <label for="pqSelect">Select Report</label>
                      <select id="pqSelect" 
                             ng-model="pqItem"
@@ -33,6 +35,23 @@
                                    {{item.title}}
                             </option>
                      </select>
+                    </div>
+                    <div>
+                        <label for="selectTotalRows">Total Rows Returned</label>
+                        <select id="selectTotalRows" ng-model="totalRows">
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                            <option value="250">250</option>
+                            <option value="500">500</option>
+                            <option value="1000">1000</option>
+                            <option value="0">All</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="buttonRefresh">&nbsp;</label>
+                        <button id="buttonRefresh" type="button" ng-show="pqItem" ng-click="getTableData()">Refresh</button>
+                    </div>
+                  </div>
               </div>
        </div> 
        <div>
