@@ -130,7 +130,7 @@ FROM
         <summary>Student Test Results (Args)</summary>
         <description>Get a list of student test results</description>
         <args>
-            <arg name="testname" required="true" description="Test Name" type="primitive" casing="upper" />
+            <arg name="testname" column="test.name" required="true" description="Test Name" type="primitive" casing="upper" />
         </args>
         <columns>
             <column column="STUDENTS.LASTFIRST">STUDENT_NAME</column>
