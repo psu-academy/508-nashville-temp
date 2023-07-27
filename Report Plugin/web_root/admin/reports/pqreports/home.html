@@ -7,6 +7,34 @@
 <!-- Required style sheets: screen.css, and print.css --> 
  <link href="/images/css/screen.css" rel="stylesheet" media="screen">
  <link href="/images/css/print.css" rel="stylesheet" media="print">
+ <style>
+       .fancyDrop {
+              border-color: #a3bfcc;
+              border-width: medium;
+              border-top-style: solid;
+              border-bottom-style: solid;
+              list-style-type: none;
+              line-height: 1em;
+              display: flex;
+              align-items: center;
+              cursor: grab;
+       }
+       .fancyDrop:active {
+              border-color: #a3bfcc;
+              border-width: medium;
+              border-top-style: solid;
+              border-bottom-style: solid;
+              list-style-type: none;
+              line-height: 1em;
+              display: flex;
+              align-items: center;
+              cursor: grabbing;
+       }
+       .fancyList {
+              width: fit-content;
+              margin: 10px;
+       }
+ </style>
 </head> 
 <body> 
  ~[wc:admin_header_css] 
@@ -67,8 +95,10 @@
                      </div>
               </div>
               <h2 class="toggle expanded">Sort & Select Columns</h2>
-              <ul ng-model="rowHeadersBoth" pq-sortable>
-                     <li ng-repeat="header in rowHeadersBoth track by $index">
+              <ul ng-model="rowHeadersBoth" pq-sortable class="fancyList">
+                     <li ng-repeat="header in rowHeadersBoth track by $index" class="fancyDrop">
+                            <pds-icon name="drag-handle"></pds-icon>
+                            <input type="checkbox" ng-model="header.showItem">
                             {{header.name}}
                      </li>
               </ul>
@@ -86,12 +116,16 @@
                             <tr>
                                    <th  ng-repeat="header in rowHeadersBoth" 
                                         ng-bind="header.name"
-                                        data-pss-sort-fields="{{header.field}}"></th>
+                                        data-pss-sort-fields="{{header.field}}"
+                                        ng-show="header.showItem"></th>
                             </tr>
                      </thead>
                      <tbody>
                             <tr ng-repeat="row in filteredTableData">
-                                   <td ng-repeat="column in rowHeadersBoth" ng-bind="row[column.field]"></td>
+                                   <td 
+                                          ng-repeat="column in rowHeadersBoth" 
+                                          ng-bind="row[column.field]"
+                                          ng-show="column.showItem"></td>
                             </tr>
                      </tbody>
               </table>

@@ -46,7 +46,7 @@ define(function(require) {
                 $scope.rowHeadersRaw.push(n);
                 var tempHeader = $scope.sanitizeHeader(n);
                 $scope.rowHeaders.push(tempHeader);
-                $scope.rowHeadersBoth.push({"field": n, "name": tempHeader});
+                $scope.rowHeadersBoth.push({"field": n, "name": tempHeader, "showItem": true});
             });
             console.log($scope.rowHeaders);
             $scope.rowHeadersBoth = $filter('orderBy')($scope.rowHeadersBoth, 'name');
