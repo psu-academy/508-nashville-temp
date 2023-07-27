@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" dir="ltr" >
 <head>
  <title>PQ Reports</title>
 <!-- required scripts -->
@@ -37,6 +37,12 @@
        </div> 
        <div>
               <h3>{{reportTitle}}</h3>
+              <div id="grid-widget"
+              data-pss-grid-widget
+              data-data="tableData.record"
+              data-filtered-data="filteredTableData"
+              data-client-side-pagination="true"
+              data-persist-rows-per-page="true">
               <table class="linkDescList">
                      <thead>
                             <tr>
@@ -44,11 +50,12 @@
                             </tr>
                      </thead>
                      <tbody>
-                            <tr ng-repeat="row in tableData.record">
+                            <tr ng-repeat="row in filteredTableData">
                                    <td ng-repeat="column in rowHeadersBoth" ng-bind="row[column.field]"></td>
                             </tr>
                      </tbody>
               </table>
+              </div>
        </div>
  </div>
 <!-- end of content area --> 
