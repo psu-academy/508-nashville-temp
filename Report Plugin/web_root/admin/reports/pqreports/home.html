@@ -49,9 +49,16 @@
                     </div>
                     <div>
                         <label for="buttonRefresh">&nbsp;</label>
-                        <button id="buttonRefresh" type="button" ng-show="pqItem" ng-click="getTableData()">Refresh</button>
+                        <button id="buttonRefresh" type="button" ng-show="pqItem" ng-click="getTableData()">Run Report</button>
                     </div>
                   </div>
+              </div>
+              <h2 class="toggle expanded">Required Parameters</h2>
+              <div>
+                     <p ng-repeat="arg in requiredArgs track by $index">
+                            {{arg}} <input type="text" ng-model="suppliedArgs[$index]" value="" />
+                     </p>
+                     <button type="button" ng-click="getTableData()">Run Report</button>
               </div>
        </div> 
        <div>

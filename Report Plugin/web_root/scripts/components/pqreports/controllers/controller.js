@@ -11,6 +11,8 @@ define(function(require) {
         $scope.rowHeadersRaw = []; //query column name from the headers
         $scope.rowHeadersBoth = []; //both column name and sanitized header
         $scope.pqSelect = [];
+        $scope.requiredArgs = [];
+        $scope.suppliedArgs = [];
         $scope.reportTitle = 'No Report Selected';
         $scope.totalRows = "100";
 
@@ -32,6 +34,7 @@ define(function(require) {
             console.log('Getting the PowerQuery Data');
             $scope.pqItemObj = JSON.parse($scope.pqItem);
             $scope.reportTitle = $scope.pqItemObj.title;
+            $scope.requiredArgs = $scope.pqItemObj.args;
             $scope.tableData = {};
             $scope.rowHeaders = []; //sanitized header title
             $scope.rowHeadersRaw = []; //query column name from the headers
@@ -48,24 +51,38 @@ define(function(require) {
             console.log($scope.rowHeaders);
             $scope.rowHeadersBoth = $filter('orderBy')($scope.rowHeadersBoth, 'name');
 
+            if (
+                $scope.requiredArgs.length === 0
+                || $scope.suppliedArgs.length === $scope.requiredArgs.length
+            ) {
+                var pqRequest = {
+                    method: 'POST',
+                    url: $scope.pqItemObj.url + '?pagesize=' + $scope.totalRows,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    data: {},
+                    datatype: 'json'
+                }
 
-            var pqRequest = {
-                method: 'POST',
-                url: $scope.pqItemObj.url + '?pagesize=' + $scope.totalRows,
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                data: {},
-                datatype: 'json'
+                /* Intercept request object and add parameters if required */
+                if ($scope.requiredArgs.length > 0) {
+                    angular.forEach($scope.suppliedArgs, function(v, key) {
+                        pqRequest.data[$scope.requiredArgs[key]] = v;
+                    });
+                }
+
+                pqService.getData(pqRequest).then( function(result) {
+                    $scope.tableData = result;
+                    console.log($scope.tableData);
+
+                    closeLoading();
+                });
+
+            } else {
+                console.log('User did not supply required parameters');
             }
-
-            pqService.getData(pqRequest).then( function(result) {
-                $scope.tableData = result;
-                console.log($scope.tableData);
-
-                closeLoading();
-            });
 
 
         };

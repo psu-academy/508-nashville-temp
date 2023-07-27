@@ -9,6 +9,7 @@ define(function(require) {
                     if (result.data.paths) {
                         var pqArray = [];
                         var pqHeaders = [];
+                        var requiredArgs = [];
                         angular.forEach(result.data.paths, function(value,key) {
                             if (value.post.tags.indexOf('pqreport') > -1) {
                                 pqHeaders = [];
@@ -19,11 +20,17 @@ define(function(require) {
                                 } else {
                                     // hold for the future
                                 }
+                                if (typeof result.data.definitions['powerquery.param.'+key.replace('/ws/schema/query/','')] !== 'undefined') {
+                                    requiredArgs = result.data.definitions['powerquery.param.'+key.replace('/ws/schema/query/','')].required;
+                                } else {
+                                    requiredArgs = [];
+                                }
 
                                 pqArray.push({
                                     title: value.post.summary,
                                     url: key,
-                                    headers: pqHeaders
+                                    headers: pqHeaders,
+                                    args: requiredArgs
                                 });
                             }
                         });
